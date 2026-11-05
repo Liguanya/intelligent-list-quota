@@ -75,7 +75,7 @@
                 <h3>📋 使用说明与价格参考</h3>
                 <ul>
                     <li>上传智能化工程量清单 Excel（.xlsx/.xls），<strong>A列=序号</strong>、<strong>B列=项目名称（设备名称/规格）</strong>、<strong>C列=数量</strong>、<strong>D列=单位（可选）</strong>，首行可为表头；系统按项目名称<strong>自动识别设备类别与规格档位</strong>并套用清单与定额，结果支持<strong>「广联达 / 建经科技」</strong>两种格式导出。</li>
-                    <li><strong>价格参考</strong>：天津市当月最新信息价以及市场价——信息价有的按信息价计入（页面不标品牌），信息价缺项的按国产中高档市场价并给出参考品牌。</li>
+                    <li><strong>价格参考</strong>：天津市工程造价信息（2026年1—10期）及市场价——页面顶部「信息价期号」可选择期次（默认最新一期），切换后主材价按该期信息价重新计算；信息价有的按信息价计入（页面不标品牌），信息价缺项的按国产中高档市场价并给出参考品牌。</li>
                 </ul>
             </div>
 
@@ -142,7 +142,9 @@
     </div>
 
     <script src="js/xlsx.full.min.js"></script>
+    <script src="data/periods-2026.js"></script>
     <script src="data/prices.js"></script>
+    <script src="data/periods-merge.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
