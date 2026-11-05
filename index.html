@@ -75,7 +75,7 @@
                 <h3>📋 使用说明与价格参考</h3>
                 <ul>
                     <li>上传智能化工程量清单 Excel（.xlsx/.xls），<strong>A列=序号</strong>、<strong>B列=项目名称（设备名称/规格）</strong>、<strong>C列=数量</strong>、<strong>D列=单位（可选）</strong>，首行可为表头；系统按项目名称<strong>自动识别设备类别与规格档位</strong>并套用清单与定额，结果支持<strong>「广联达 / 建经科技」</strong>两种格式导出。</li>
-                    <li><strong>价格参考</strong>：天津市工程造价信息（2026年1—10期）及市场价——页面顶部「信息价期号」可选择期次（默认最新一期），切换后主材价按该期信息价重新计算；信息价有的按信息价计入（页面不标品牌），信息价缺项的按国产中高档市场价并给出参考品牌。</li>
+                    <li><strong>价格参考</strong>：天津市工程造价信息（2026年1—10期）及市场价——页面顶部「信息价期号」可选择期次（默认最新一期 2026年第10期），切换后主材价按该期信息价重新计算；该期信息价有该规格的按信息价计入（页面不标品牌），信息价缺项的按国产中高档市场价并给出参考品牌。2026年11月造价信息尚未发布，暂不设11月期次。</li>
                 </ul>
             </div>
 
@@ -116,7 +116,7 @@
 
             <div class="result-area" id="resultArea" style="display:none;">
                 <div class="result-header"><h2>📊 组价结果预览</h2></div>
-                <p class="legend">说明：<span class="tag tag-market">市场价</span>=设备按国产中高档市场价参考（悬停看依据与品牌）；<span class="tag tag-info">信息价</span>=桥架/管材/线缆按天津当月信息价；<span class="tag tag-pending">待询价</span>=暂无价格需人工补；<span class="tag tag-infer">推</span>=定额编号按缺省档/就近档推算需核对基价表；⚠️黄色行请人工核对。</p>
+                <p class="legend">说明：<span class="tag tag-market">市场价</span>=设备及信息价缺项的桥架/电线按国产中高档市场价参考（悬停看依据与品牌）；<span class="tag tag-info">信息价</span>=桥架/电线按所选期次天津造价信息计入（该期无此规格则按市场价）；<span class="tag tag-pending">待询价</span>=暂无价格需人工补；<span class="tag tag-infer">推</span>=定额编号按缺省档/就近档推算需核对基价表；⚠️黄色行请人工核对。</p>
                 <div class="table-container">
                     <table id="resultTable">
                         <thead>
