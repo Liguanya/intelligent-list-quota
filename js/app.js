@@ -658,13 +658,17 @@
     for (var i = 0; i < ps.length; i++) if (ps[i].period === key) return ps[i];
     return ps[0];
   }
-  function nearestPrice(tbl, v) {
+  function nearestKey(tbl, v) {
     var keys = Object.keys(tbl).map(Number).filter(function (n) { return !isNaN(n); }).sort(function (a, b) { return a - b; });
     if (!keys.length) return null;
-    if (v === null || v === undefined || isNaN(v)) return tbl[keys[keys.length - 1]];
+    if (v === null || v === undefined || isNaN(v)) return keys[keys.length - 1];
     var best = keys[0];
     keys.forEach(function (k) { if (Math.abs(k - v) < Math.abs(best - v)) best = k; });
-    return tbl[best];
+    return best;
+  }
+  function nearestPrice(tbl, v) {
+    var k = nearestKey(tbl, v);
+    return k === null ? null : tbl[k];
   }
 
   function priceOf(it, periodKey) {
@@ -682,7 +686,7 @@
     if (!m) return { price: null, source: 'market', brand: '', basis: '' };
     var brand = m.brand || '';
     var nm = m.name || DEF[cat].lname;
-    var val = null, desc = '';
+    var val = null, desc = '', hitKey = null;
 
     if (m.opts) {
       var k = it.pick || Object.keys(m.opts)[0];
@@ -693,23 +697,40 @@
       var v = paramVal(it);
       if (cat === 'sw' && it.swPorts) v = it.swPorts;
       if (v === null || v === undefined || v === Infinity) v = null;
-      val = nearestPrice(m.prices, v);
+      hitKey = nearestKey(m.prices, v);
+      val = hitKey === null ? null : m.prices[hitKey];
       desc = priceSpecDesc(it);
     } else if (m.tiers) {
       var tv = it.tier;
       if (cat === 'sw') tv = it.swPorts || null;
-      val = (tv !== null && tv !== undefined && m.tiers[tv] !== undefined) ? m.tiers[tv] : nearestPrice(m.tiers, tv);
+      hitKey = (tv !== null && tv !== undefined && m.tiers[tv] !== undefined) ? tv : nearestKey(m.tiers, tv);
+      val = hitKey === null ? null : m.tiers[hitKey];
       desc = priceSpecDesc(it);
     } else {
       val = m.p;
       desc = '';
     }
     var unitTxt = isPipe ? '元/m' : ('元/' + DEF[cat].unit);
+    // 桥架/电线：仅当该期造价信息确有该规格时标"信息价"，否则回落市场价
+    var src = isPipe ? 'info' : 'market';
+    var basis = (isPipe ? '信息价（' : '市场价（') + brand + '）：' + nm + (desc ? ' ' + desc : '') + ' ' + val + ' ' + unitTxt;
+    if (isPipe && p.infoPipe) {
+      var perLabel = p.releaseLabel || p.period;
+      var mark = (cat === 'bridge') ? p.infoPipe.bridge : (cat === 'wire' ? p.infoPipe.byj : null);
+      if (mark && hitKey !== null && mark[hitKey]) {
+        basis = '信息价（天津市工程造价信息 ' + perLabel + '，除税）：' + nm +
+                (desc ? ' ' + desc : '') + ' ' + val + ' ' + unitTxt;
+      } else {
+        src = 'market';
+        basis = '市场价（' + brand + '）：' + nm + (desc ? ' ' + desc : '') + ' ' + val + ' ' + unitTxt +
+                '；' + perLabel + (mark ? '造价信息无此规格' : '造价信息缺项') + '，按市场价计入';
+      }
+    }
     return {
       price: (val === undefined || val === null) ? null : val,
-      source: isPipe ? 'info' : 'market',
+      source: src,
       brand: brand,
-      basis: (isPipe ? '信息价（' : '市场价（') + brand + '）：' + nm + (desc ? ' ' + desc : '') + ' ' + val + ' ' + unitTxt
+      basis: basis
     };
   }
 

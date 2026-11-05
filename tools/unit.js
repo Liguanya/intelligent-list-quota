@@ -12,7 +12,7 @@ function ck(name, got, want) {
   else { fail++; console.log('  ✗ ' + name + '  期望=' + JSON.stringify(want) + '  实际=' + JSON.stringify(got)); }
 }
 function pr(n, qty) {
-  var rows = A.parseRows([[1, n, qty === undefined ? 10 : qty]], '2026-11', 'guanglianda');
+  var rows = A.parseRows([[1, n, qty === undefined ? 10 : qty]], '2026-10', 'guanglianda');
   return rows[0];
 }
 function code(n) { return pr(n).quotaCode; }
@@ -240,14 +240,14 @@ var mix = A.parseRows([
   [10, '吸顶扬声器', 12],
   [11, 'UPS 50kV·A', 1],
   [12, '门禁控制箱', 3]
-], '2026-11', 'guanglianda');
+], '2026-10', 'guanglianda');
 ck('混合行数', mix.length, 12);
 ck('混合无待询价', mix.filter(function (r) { return !(r.price > 0); }).length, 0);
 ck('混合首行交换机48口', mix[0].quotaCode, '12-102');
 ck('混合合计>0', mix.reduce(function (s, r) { return s + r.price * r.quantity; }, 0) > 0, true);
 
 console.log('\n== 20. 导出格式切换 ==');
-var jj = A.parseRows([[1, '核心交换机 24口', 2]], '2026-11', 'jianjing')[0];
+var jj = A.parseRows([[1, '核心交换机 24口', 2]], '2026-10', 'jianjing')[0];
 ck('建经格式清单码', jj.listCode, '030501015');
 ck('建经格式定额码', jj.quotaCode, '12-102');
 ck('建经格式价格不变', jj.price, pr('核心交换机 24口').price);

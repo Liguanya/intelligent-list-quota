@@ -7,8 +7,8 @@
   var T = (typeof window !== 'undefined' && window.TJ_PERIODS_2026) || [];
   var P = (typeof window !== 'undefined' && window.INTELLI_PRICE_PERIODS) || [];
   if (!T.length || !P.length) return;
-  var tpl = P[0];
   function cp(o) { return JSON.parse(JSON.stringify(o)); }
+  var tpl = cp(P[0]);   // 模板快照：避免首个信息价期写入后污染后续期
   function byWidth(bridge) {
     var acc = {};
     Object.keys(bridge).forEach(function (k) {
@@ -33,11 +33,12 @@
     o.releaseLabel = p.label;
     o.source = 'tj-info';
     var n = 0;
+    o.infoPipe = { bridge: {}, byj: {} };
     if (p.bridge && Object.keys(p.bridge).length) {
       var bw = byWidth(p.bridge);
       o.pipe = o.pipe || {};
       o.pipe.bridge = o.pipe.bridge || { prices: {} };
-      Object.keys(bw).forEach(function (w) { o.pipe.bridge.prices[w] = bw[w]; n++; });
+      Object.keys(bw).forEach(function (w) { o.pipe.bridge.prices[w] = bw[w]; o.infoPipe.bridge[w] = 1; n++; });
       if (p.period === '2026-10') latestBw = bw;
     }
     // 电线 BYJ/BV 近似映射到 byj 档（同截面）
@@ -49,6 +50,7 @@
         if (parts[0] !== 'BYJ' && parts[0] !== 'BV') return;
         var sec = parts[1].replace(/^\d+x/, '');
         o.pipe.byj.prices[sec] = p.wire[k];
+        o.infoPipe.byj[sec] = 1;
         n++;
       });
       if (p.period === '2026-10') latestByj = o.pipe.byj.prices;
@@ -56,25 +58,8 @@
     o.infoCount = n;
     if (!exist) P.push(o);
   });
-  // 模板期（2026-11）尚无当月期刊，桥架/电线取最新已发布的 2026-10 期信息价
-  if (latestBw || latestByj) {
-    for (var j = 0; j < P.length; j++) {
-      if (P[j].period !== '2026-11') continue;
-      var t11 = P[j];
-      t11.pipe = t11.pipe || {};
-      if (latestBw) {
-        t11.pipe.bridge = t11.pipe.bridge || { prices: {} };
-        t11.pipe.bridge.prices = t11.pipe.bridge.prices || {};
-        Object.keys(latestBw).forEach(function (w) { t11.pipe.bridge.prices[w] = latestBw[w]; });
-      }
-      if (latestByj) {
-        t11.pipe.byj = t11.pipe.byj || { prices: {} };
-        t11.pipe.byj.prices = t11.pipe.byj.prices || {};
-        Object.keys(latestByj).forEach(function (s2) { t11.pipe.byj.prices[s2] = latestByj[s2]; });
-      }
-      t11.infoNote = '信息价取 2026 年第 10 期（最新已发布）';
-    }
-  }
+  // 2026 年 11 月造价信息尚未发布，不设 11 月期，统一按 10 月信息价 + 市场价计入
+  for (var q = P.length - 1; q >= 0; q--) if (P[q].period === '2026-11') P.splice(q, 1);
   function pk(s) { var a = String(s || '').split('-'); return (parseInt(a[0], 10) || 0) * 100 + (parseInt(a[1], 10) || 0); }
   P.sort(function (a, b) { return pk(b.period) - pk(a.period); });
 })();
