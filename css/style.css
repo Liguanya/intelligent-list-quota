@@ -1,0 +1,364 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.content {
+    padding: 30px;
+}
+
+.instructions {
+    background: #f0f7f8;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 4px solid #1a5e63;
+}
+
+.instructions h3 {
+    color: #0d3d44;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.instructions ul {
+    color: #555;
+    font-size: 13px;
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.instructions li {
+    margin-bottom: 4px;
+}
+
+.instructions strong {
+    color: #c0392b;
+}
+
+/* 格式选择区域 */
+.format-select-area {
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.format-select-area .label {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.format-select-area .toggle-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.format-select-area .toggle-btn {
+    padding: 10px 24px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.format-select-area .toggle-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.format-select-area .toggle-btn.active {
+    background: white;
+    color: #1a5e63;
+    border-color: white;
+}
+
+.upload-area {
+    border: 3px dashed #1a5e63;
+    border-radius: 12px;
+    padding: 50px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 25px;
+    background: #fafcfb;
+}
+
+.upload-area:hover {
+    border-color: #0d3d44;
+    background: #f0f7f8;
+}
+
+.upload-area.dragover {
+    background: #e0f0f2;
+    border-color: #0d3d44;
+}
+
+.upload-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.upload-text {
+    color: #555;
+    font-size: 16px;
+}
+
+.upload-hint {
+    color: #999;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#excelFile {
+    display: none;
+}
+
+.btn-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(26,94,99,0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-export {
+    background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+    color: white;
+}
+
+.btn-export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(39,174,96,0.4);
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th {
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    color: white;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+th.col-seq { min-width: 40px; }
+th.col-code { min-width: 90px; }
+th.col-name { min-width: 140px; }
+th.col-dim { min-width: 100px; }
+th.col-fan-type { min-width: 80px; }
+th.col-brand { min-width: 80px; }
+th.col-quota { min-width: 70px; }
+th.col-quota-name { min-width: 200px; }
+th.col-price { min-width: 80px; }
+th.col-qty { min-width: 50px; }
+th.col-feature { min-width: 300px; }
+
+td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+}
+
+td.left-align {
+    text-align: left;
+}
+
+tr:hover {
+    background: #f8fffe;
+}
+
+.status {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.status-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: linear-gradient(135deg, #1a5e63 0%, #0d3d44 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.summary-card.green {
+    background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+}
+
+.summary-card .number {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.summary-card .label {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.result-header h2 {
+    color: #333;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 22px;
+    }
+    
+    .upload-area {
+        padding: 30px;
+    }
+    
+    .format-select-area {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    table {
+        font-size: 11px;
+    }
+    
+    th, td {
+        padding: 8px 4px;
+    }
+    
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== 行内堆叠下拉（荧光灯三选 / 配电箱形式+半周长）===== */
+.lay-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: stretch;
+    min-width: 130px;
+}
+.cell-select.lay-lamp,
+.cell-select.lay-box,
+.cell-select.lay-ground,
+.cell-select.lay-bus {
+    width: 100%;
+    font-size: 12px;
+    padding: 4px 6px;
+}

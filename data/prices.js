@@ -1,0 +1,106 @@
+/* ============================================================
+ * 智能化专业智能组价系统 - 主材价格库
+ * 依据：天津市当月造价信息 + 合理市场价格标准（除税价）
+ * 设备：元/台（个、套、条、把）；管线材料：元/m
+ * ============================================================ */
+window.INTELLI_PRICE_PERIODS = [
+  {
+    period: '2026-11',
+    releaseLabel: '2026年第11期（11月）',
+    source: 'tj-info',
+    // ========== 设备市场价（信息价缺项，按国产中高档市场价）==========
+    dev: {
+      // ---- 网络与布线 ----
+      sw: { name: '接入层交换机（24口千兆，含2个光口）', brand: '华为HUAWEI / 华三H3C / 锐捷Ruijie',
+            p: 3200, tiers: { 24: 2800, 48: 6200, 999: 12000 } },
+      patchPanel: { name: '配线架（含模块、理线器）', brand: '普天Potevio / 一舟SHIP / 康普CommScope',
+                    prices: { 12: 160, 24: 240, 48: 420, 96: 780 } },
+      patchCord: { name: '跳线（成品，含水晶头）', brand: '一舟SHIP / 普天Potevio', p: 8 },
+      dataSocket: { name: '信息插座（含模块、面板）', brand: '一舟SHIP / 普天Potevio / 西蒙Siemon',
+                    opts: { single: 35, double: 55 } },
+      telSocket: { name: '电话插座（含模块、面板）', brand: '一舟SHIP / 普天Potevio',
+                   opts: { single: 30, double: 48 } },
+      fiberSocket: { name: '光纤插座（含法兰、尾纤）', brand: '一舟SHIP / 普天Potevio',
+                     opts: { double: 120, quad: 180 } },
+      ap: { name: '无线AP（Wi-Fi 6，吸顶式，含支架）', brand: '华为HUAWEI / 华三H3C / 锐捷Ruijie', p: 620 },
+      junctionBox: { name: '接线盒（86型，金属）', brand: '国产中高档（86型金属接线盒）', p: 8 },
+      workstation: { name: '图形工作站（含显示器、键鼠）', brand: '联想Lenovo / 戴尔Dell / 惠普HP', p: 6800 },
+      server: { name: '服务器（2U机架式，含导轨）', brand: '华为HUAWEI / 浪潮Inspur / 戴尔Dell', p: 35000 },
+      pc: { name: '台式电脑（含显示器、键鼠）', brand: '联想Lenovo / 戴尔Dell / 惠普HP', p: 6000 },
+      cabinet: { name: '机柜（42U标准19英寸，含风扇、PDU、理线）', brand: '图腾TOTEN / 威图Rittal / 一舟SHIP', p: 2400 },
+      weakBox: { name: '弱电箱（含空箱、门锁、接地排）', brand: '国产中高档（弱电箱厂）', p: 320 },
+      moduleBox: { name: '模块箱（金属，含安装板）', brand: '国产中高档（箱体厂）', p: 800 },
+      gateway: { name: '网关（智能照明/物联网网关）', brand: '华为HUAWEI / 施耐德Schneider / 路创Lutron', p: 1800 },
+      power: { name: '电源（DC12V/24V开关电源，含箱）', brand: '明纬MEAN WELL / 台达Delta', p: 450 },
+      ups: { name: 'UPS不间断电源（在线式，含电池组）', brand: '山特SANTAK / 施耐德Schneider / 华为HUAWEI',
+             tiers: { 30: 8000, 100: 26000, 500: 120000, 99999: 300000 } },
+      lightning: { name: '电源/信号避雷器（SPD，含接地）', brand: '中光防雷 / 施耐德Schneider / OBO', p: 260 },
+      keyboard: { name: '控制键盘（停车场/安防管理键盘）', brand: '捷顺Jieshun / 科拓Keytop', p: 1200 },
+      screen: { name: 'LED显示屏（全彩，含控制系统）', brand: '利亚德Leyard / 洲明Unilumin / 强力巨彩', p: 8500 },
+      touchScreen: { name: '触摸屏（含安装支架、软件组态）', brand: '研华Advantech / 西门子Siemens', p: 4500 },
+      monitor: { name: '显示器（27英寸，含支架）', brand: '戴尔Dell / 联想Lenovo / AOC', p: 1200 },
+      decoder: { name: '视频解码器（含上架附件）', brand: '海康威视HIKVISION / 大华DAHUA', p: 3800 },
+      camera: { name: '网络摄像机（200万像素，含镜头、支架）', brand: '海康威视HIKVISION / 大华DAHUA / 宇视Uniview', p: 850 },
+      projector: { name: '投影仪（含吊架）', brand: '爱普生Epson / 索尼SONY / 明基BenQ', p: 6000 },
+      projectorScreen: { name: '投影幕布（电动，含吊装附件）', brand: '红叶 / 亿立Elite', p: 1200 },
+      // ---- 安防、门禁、报警 ----
+      alarmHorn: { name: '报警警号（声光一体，含支架）', brand: '豪恩HORN / 博世BOSCH', p: 180 },
+      alarmBell: { name: '警铃（报警装置，含底座）', brand: '豪恩HORN / 国产中高档', p: 120 },
+      soundLight: { name: '声光报警器（含底座）', brand: '豪恩HORN / 博世BOSCH', p: 220 },
+      detector: { name: '入侵探测器（红外/双鉴，含支架）', brand: '博世BOSCH / 豪恩HORN / 霍尼韦尔Honeywell', p: 160 },
+      button: { name: '紧急按钮（含复位钥匙）', brand: '豪恩HORN / 博世BOSCH', p: 45 },
+      btnBox: { name: '按扭箱（金属，含安装板）', brand: '国产中高档（箱体厂）', p: 600 },
+      reader: { name: '读卡器 / 人脸识别一体机', brand: '海康威视HIKVISION / 大华DAHUA / 熵基ZKTeco', p: 1850 },
+      doorBox: { name: '门禁控制箱（含控制器、电源）', brand: '海康威视HIKVISION / 熵基ZKTeco', p: 1500 },
+      electricLock: { name: '电控锁（磁力锁/电插锁，含支架）', brand: '海康威视HIKVISION / 熵基ZKTeco', p: 380 },
+      keyButton: { name: '出门按键（含面板）', brand: '国产中高档（门禁配件）', p: 60 },
+      intercom: { name: '对讲分机（可视，含安装底座）', brand: '安居宝ANJUBAO / 狄耐克DNAKE', p: 260 },
+      doorPhone: { name: '门口机（可视对讲，含安装附件）', brand: '安居宝ANJUBAO / 狄耐克DNAKE', p: 1800 },
+      intercomHost: { name: '对讲管理主机（含软件授权）', brand: '安居宝ANJUBAO / 狄耐克DNAKE', p: 3200 },
+      intercomUnit: { name: '对讲器（非可视，含底座）', brand: '安居宝ANJUBAO / 国产中高档', p: 240 },
+      switchPanel: { name: '开关面板（86型，含底座）', brand: '西门子Siemens / 施耐德Schneider / 罗格朗Legrand', p: 45 },
+      antiFreeze: { name: '防冻开关（管道防冻，含探头）', brand: '江森Johnson / 霍尼韦尔Honeywell', p: 380 },
+      sensorT: { name: '温湿度传感器（风管/室内型）', brand: '江森Johnson / 霍尼韦尔Honeywell / 西门子Siemens', p: 420 },
+      sensorP: { name: '压力/压差传感器（含取压附件）', brand: '江森Johnson / 霍尼韦尔Honeywell / 西门子Siemens', p: 680 },
+      communicator: { name: '通讯器（巡更/数据通讯，含天线）', brand: '蓝卡BlueCard / 国产中高档', p: 1200 },
+      interfaceBox: { name: '接口箱（含接口模块、端子）', brand: '国产中高档（成套厂）', p: 800 },
+      clock: { name: '子钟（数字式，含吊装附件）', brand: '北极星 / 国产中高档', p: 1500 },
+      masterClock: { name: '母钟（GPS/北斗授时，含天线）', brand: '北极星 / 国产中高档', p: 8000 },
+      cardIssuer: { name: '发卡器（IC卡读写，含软件）', brand: '捷顺Jieshun / 科拓Keytop', p: 2600 },
+      // ---- 楼控、能耗 ----
+      controller: { name: '控制器（可编程，含箱体）', brand: '江森Johnson / 霍尼韦尔Honeywell / 西门子Siemens', p: 4500 },
+      ddc: { name: 'DDC控制箱（含控制器、电源、端子）', brand: '江森Johnson / 霍尼韦尔Honeywell / 西门子Siemens', p: 6800 },
+      collector: { name: '数据采集器（能耗/设备，含通讯模块）', brand: '安科瑞Acrel / 威胜Wasion', p: 2800 },
+      // ---- 广播、会议 ----
+      mic: { name: '话筒（鹅颈式，含底座）', brand: 'BOSCH / 台电TAIDEN', p: 800 },
+      player: { name: '播放器（数字节目源，含软件）', brand: 'BOSCH / 迪士普DSPPA', p: 1600 },
+      amplifier: { name: '放大器（前置/混合，含机架附件）', brand: 'BOSCH / 迪士普DSPPA', p: 2200 },
+      powerAmp: { name: '功率放大器（定压输出，含机架附件）', brand: 'BOSCH / 迪士普DSPPA', p: 3800 },
+      speaker: { name: '扬声器（含安装附件）', brand: 'BOSCH / 迪士普DSPPA / 国产中高档', p: 150 },
+      monitorSpeaker: { name: '监听音箱（含支架）', brand: 'BOSCH / 迪士普DSPPA', p: 260 }
+    },
+    // ========== 管线材料（元/m，除税，含附件不另计）==========
+    pipe: {
+      bridge: { name: '钢制槽式桥架（含盖板、连接件）', brand: '国产中高档（热浸镀锌钢制桥架）',
+                prices: { 150: 78, 300: 105, 400: 128, 600: 165, 800: 210, 1000: 260, 1200: 320, 1500: 400 } },
+      jdg: { name: 'JDG紧定式镀锌电线管（含管件）', brand: '国产中高档（JDG导管）',
+             prices: { 15: 6.8, 20: 8.2, 25: 10.5, 32: 13.5, 40: 17.0, 50: 21.0 } },
+      sc: { name: '热浸镀锌焊接钢管（SC，含管件）', brand: '国产中高档（GB/T3091 镀锌钢管）',
+            prices: { 15: 9.5, 20: 12.0, 25: 16.0, 32: 21.0, 40: 26.0, 50: 34.0,
+                      70: 44.0, 80: 55.0, 100: 72.0, 125: 95.0, 150: 118.0 } },
+      byj: { name: '铜芯交联聚乙烯绝缘电线（BYJ，低烟无卤）', brand: '国产中高档（津成 / 远东 / 上上）',
+             prices: { 1: 0.95, 1.5: 1.35, 2.5: 2.20, 4: 3.50, 6: 5.20, 10: 8.60, 16: 13.50 } },
+      utp: { name: '双绞线缆（UTP，四对，305m/箱）', brand: '一舟SHIP / 普天Potevio / 康普CommScope',
+             opts: { cat5e: 2.20, cat6: 3.40, cat6a: 5.60, cat7: 9.00 } },
+      fiber: { name: '光缆（单模G.652D，室内外通用）', brand: '长飞YOFC / 亨通Hengtong / 烽火FiberHome',
+               prices: { 4: 2.80, 8: 3.60, 12: 4.60, 24: 7.20, 48: 12.50, 72: 17.00, 96: 22.00, 144: 32.00 } },
+      bigPair: { name: '大对数电缆（HYA，铜芯）', brand: '国产中高档（通信电缆厂）',
+                 prices: { 10: 5.50, 25: 12.00, 50: 23.00, 100: 45.00, 200: 88.00 } },
+      flexWire: { name: '铜芯软线（RVV/RYY，多芯）', brand: '国产中高档（津成 / 远东 / 上上）',
+                  prices: { '2x0.75': 2.10, '2x1': 2.50, '2x1.5': 3.20, '2x2.5': 4.80,
+                            '4x0.75': 3.40, '4x1': 4.20, '4x1.5': 5.60, '4x2.5': 8.50,
+                            '8x0.75': 6.50, '8x1': 8.00, '8x1.5': 10.50, '8x2.5': 16.00,
+                            '16x0.75': 12.00, '16x1': 15.00, '16x1.5': 20.00 } }
+    }
+  }
+];
