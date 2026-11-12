@@ -252,6 +252,15 @@ ck('建经格式清单码', jj.listCode, '030501015');
 ck('建经格式定额码', jj.quotaCode, '12-102');
 ck('建经格式价格不变', jj.price, pr('核心交换机 24口').price);
 
+console.log('\n== 12位清单编码（同码递增、异码各自001）==');
+var c12 = A.parseRows([[1, '核心交换机 24口', 2], [2, '核心交换机 24口', 3]], '2026-10', 'guanglianda');
+A.annotateListCode12(c12);
+var cc12 = c12.map(function (x) { return x.listCode12; });
+ck('编码均为12位', cc12.every(function (c) { return /^\d{12}$/.test(c); }), true);
+ck('同码首条001', cc12[0].slice(9), '001');
+ck('同码次条002', cc12[1].slice(9), '002');
+ck('异码从001起', c12[2] ? c12[2].listCode12.slice(9) : '001', '001');
+
 console.log('\n----------------------------------------');
 console.log('通过 ' + pass + ' 项，失败 ' + fail + ' 项');
 if (fail > 0) process.exit(1);

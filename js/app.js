@@ -1045,6 +1045,7 @@
   }
 
   function renderTable(data) {
+    annotateListCode12(data);
     var tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
     data.forEach(function (item, i) {
@@ -1053,7 +1054,7 @@
       if (item.warn) tr.className = 'row-warn';
       tr.innerHTML =
         '<td>' + escapeHtml(item.index) + '</td>' +
-        '<td>' + (item.listCode || '—') + '</td>' +
+        '<td>' + (item.listCode12 || item.listCode || '—') + '</td>' +
         '<td class="cell-name" title="' + escapeHtml(item.name) + '">' + escapeHtml(item.name) + '</td>' +
         '<td>' + layCell(item) + '</td>' +
         '<td>' + escapeHtml(item.material || '—') + '</td>' +
@@ -1122,9 +1123,10 @@
   function num2(v) { return v === null || v === undefined ? '' : Number(Number(v).toFixed(2)); }
 
   function exportJianjing(data) {
+    annotateListCode12(data);
     var wsData = [['序号', '清单编码', '项目名称', '定额编码', '定额名称', '主材价格', '数量', '项目特征']];
     data.forEach(function (it) {
-      wsData.push([it.index, it.listCode, it.name, it.quotaCode, it.quotaName,
+      wsData.push([it.index, it.listCode12 || it.listCode, it.name, it.quotaCode, it.quotaName,
         it.price === null ? '' : num2(it.price), it.quantity, it.features]);
     });
     var total = data.reduce(function (s, d) { return s + (d.price === null ? 0 : d.price * d.quantity); }, 0);
@@ -1138,7 +1140,20 @@
     XLSX.writeFile(wb, '清单定额报价表_建经_' + today() + '.xlsx');
   }
 
+  // 清单编码补足 12 位：同一 9 位清单编码按清单出现顺序追加 001/002/003…；
+  // 不同 9 位编码各自从 001 起。非 9 位纯数字编码（如补充码 03B001）保持原样。
+  function annotateListCode12(data) {
+    var seq = {};
+    data.forEach(function (it) {
+      var c = it.listCode || '';
+      if (!/^\d{9}$/.test(c)) { it.listCode12 = c; return; }
+      seq[c] = (seq[c] || 0) + 1;
+      it.listCode12 = c + ('00' + seq[c]).slice(-3);
+    });
+  }
+
   function exportGLD(data) {
+    annotateListCode12(data);
     var wsData = [['序号', '项目名称', '类型', '材质', '型号', '规格', '截面mm2', '工程量',
       '项目编码', '类型', '名称', '项目特征', '单位', '工程量', '主材单价']];
 
@@ -1158,7 +1173,7 @@
       }
       wsData.push([
         it.index, it.name, kind, it.material, '', sp, '', it.quantity,
-        it.listCode, '清单行', it.name, it.features, it.unit, it.quantity,
+        it.listCode12 || it.listCode, '清单行', it.name, it.features, it.unit, it.quantity,
         hasPrice ? num2(it.price) : ''
       ]);
       var qFactor = it.quotaFactor || 1;
@@ -1365,7 +1380,7 @@
       parsePoints: parsePoints, parseKva: parseKva, parseSwitchSpec: parseSwitchSpec,
       parseSocketPorts: parseSocketPorts, parseSpeakerType: parseSpeakerType, parseUtpCat: parseUtpCat,
       specText: specText, featureText: featureText, buildWarn: buildWarn,
-      priceOf: priceOf, getPeriods: getPeriods, flexKey: flexKey
+      priceOf: priceOf, getPeriods: getPeriods, flexKey: flexKey, annotateListCode12: annotateListCode12
     };
   }
 })();
