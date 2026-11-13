@@ -61,6 +61,11 @@
         .tag-infer { background: #e3f2fd; color: #1565c0; cursor: help; }
         .legend { font-size: 12px; color: #888; margin: 6px 0 0; }
         @media (max-width: 900px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+        /* 概算模式：不套清单编码与项目特征，隐藏对应列 */
+        body.gs-mode .col-lc, body.gs-mode .col-feat { display: none; }
+        .gs-tip { margin: 0 0 14px; padding: 12px 16px; border-radius: 10px; background: #fdf3e3; border: 1px solid #f4e3c4; color: #8a5a10; font-size: 13px; line-height: 1.7; }
+        .gs-tip b { color: #a9690f; }
+
     </style>
 </head>
 <body>
@@ -122,7 +127,7 @@
                         <thead>
                             <tr>
                                 <th>序号</th>
-                                <th>清单编码</th>
+                                <th class="col-lc">清单编码</th>
                                 <th>项目名称</th>
                                 <th>选型</th>
                                 <th>类型</th>
@@ -145,6 +150,6 @@
     <script src="data/periods-2026.js"></script>
     <script src="data/prices.js"></script>
     <script src="data/periods-merge.js"></script>
-    <script src="js/app.js?v=20261112a"></script>
+    <script src="js/app.js?v=20261113a"></script>
 </body>
 </html>

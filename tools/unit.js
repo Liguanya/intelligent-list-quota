@@ -270,6 +270,43 @@ ck('标准码不受影响', sp12[2].listCode12, '031001003001');
 ck('空编码保持空', sp12[3].listCode12, '');
 ck('长度统一12位', [sp12[0], sp12[1], sp12[2]].every(function (x) { return x.listCode12.length === 12; }), true);
 
+console.log('\n== 概算模式（?mode=gs）：不套清单编码与项目特征 ==');
+var capGG = null, capJG = null;
+global.XLSX = {
+  utils: {
+    aoa_to_sheet: function (d) { return d; },
+    book_new: function () { return {}; },
+    book_append_sheet: function (wb, ws) { wb.__rows = ws; }
+  },
+  writeFile: function (wb, name) { if (/建经/.test(name)) capJG = wb.__rows; else capGG = wb.__rows; }
+};
+var gsRows = A.parseRows([[1, '核心交换机 24口', 2], [2, '超五类非屏蔽双绞线', 300]], '2026-10', 'guanglianda');
+A.exportGLDGs(gsRows);
+ck('概算广联达表头14列', capGG[0].length, 14);
+ck('概算广联达无项目特征列', capGG[0].indexOf('项目特征'), -1);
+ck('概算广联达无清单行', capGG.filter(function (r) { return r[9] === '清单行'; }).length, 0);
+ck('概算广联达有定额行', capGG.filter(function (r) { return r[9] === '定额行'; }).length > 0, true);
+ck('概算广联达行宽统一', capGG.filter(function (r) { return r.length && r.length !== 14; }).length, 0);
+ck('概算广联达首行是定额行', capGG[1][9], '定额行');
+ck('概算广联达首行项目名称', capGG[1][1], gsRows[0].name);
+ck('概算广联达首行定额编码', capGG[1][8], gsRows[0].quotaCode);
+
+A.exportJianjingGs(gsRows);
+ck('概算建经表头6列', capJG[0].length, 6);
+ck('概算建经无清单编码列', capJG[0].indexOf('清单编码'), -1);
+ck('概算建经无项目特征列', capJG[0].indexOf('项目特征'), -1);
+ck('概算建经行宽统一', capJG.filter(function (r) { return r.length && r.length !== 6; }).length, 0);
+ck('概算建经保留定额编码', capJG[1][2], gsRows[0].quotaCode);
+
+delete require.cache[require.resolve('../js/app.js')];
+global.location = { search: '?mode=gs' };
+var A2 = require('../js/app.js');
+var capG2 = null;
+global.XLSX.writeFile = function (wb, name) { if (/建经/.test(name)) capJG = wb.__rows; else capG2 = wb.__rows; };
+A2.exportGLD(A2.parseRows([[1, '核心交换机 24口', 2]], '2026-10', 'guanglianda'));
+ck('mode=gs 自动走概算导出', capG2[0].indexOf('项目特征'), -1);
+delete global.location;
+
 console.log('\n----------------------------------------');
 console.log('通过 ' + pass + ' 项，失败 ' + fail + ' 项');
 if (fail > 0) process.exit(1);
