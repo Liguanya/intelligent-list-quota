@@ -1354,6 +1354,7 @@
   if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', function () {
     if (GS_MODE) {
       document.body.classList.add('gs-mode');
+      document.title = document.title.replace('智能组价系统', '概算组价系统').replace('智能组价平台', '概算组价平台');
       var h1 = document.querySelector('.header h1');
       if (h1) h1.textContent = h1.textContent.replace('智能组价系统', '概算组价系统').replace('智能组价平台', '概算组价平台');
       var hd = document.querySelector('.header p');
