@@ -289,6 +289,7 @@ ck('概算广联达有定额行', capGG.filter(function (r) { return r[9] === '�
 ck('概算广联达行宽统一', capGG.filter(function (r) { return r.length && r.length !== 14; }).length, 0);
 ck('概算广联达首行是定额行', capGG[1][9], '定额行');
 ck('概算广联达首行项目名称', capGG[1][1], gsRows[0].name);
+ck('概算定额行K列为项目名称', capGG[1][10], gsRows[0].name);
 ck('概算广联达首行定额编码', capGG[1][8], gsRows[0].quotaCode);
 
 A.exportJianjingGs(gsRows);

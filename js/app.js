@@ -1252,7 +1252,7 @@
         return;
       }
       wsData.push([it.index, it.name, kind, it.material, '', sp, '', it.quantity,
-        it.quotaCode, '定额行', it.quotaName, it.quotaUnit || it.unit,
+        it.quotaCode, '定额行', it.name, it.quotaUnit || it.unit,
         round4(it.quantity / qFactor), '']);
       if (hasPrice) {
         zIdx++;
