@@ -1140,15 +1140,17 @@
     XLSX.writeFile(wb, '清单定额报价表_建经_' + today() + '.xlsx');
   }
 
-  // 清单编码补足 12 位：同一 9 位清单编码按清单出现顺序追加 001/002/003…；
-  // 不同 9 位编码各自从 001 起。非 9 位纯数字编码（如补充码 03B001）保持原样。
+  // 清单编码统一补足 12 位：9 位标准码直接追加三位顺序号；
+  // 不足 9 位的（如补充码 03B001）先右补 0 至 9 位，再追加顺序号，保证输出恒为 12 位。
+  // 同一编码按清单出现顺序 001/002/003…递增，不同编码各自从 001 起；空编码保持空。
   function annotateListCode12(data) {
     var seq = {};
     data.forEach(function (it) {
-      var c = it.listCode || '';
-      if (!/^\d{9}$/.test(c)) { it.listCode12 = c; return; }
+      var c = String(it.listCode || '').trim();
+      if (!c) { it.listCode12 = c; return; }
       seq[c] = (seq[c] || 0) + 1;
-      it.listCode12 = c + ('00' + seq[c]).slice(-3);
+      var base = c.length < 9 ? c + new Array(10 - c.length).join('0') : c.slice(0, 9);
+      it.listCode12 = base + ('00' + seq[c]).slice(-3);
     });
   }
 
