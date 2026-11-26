@@ -1142,6 +1142,15 @@
     return String(max);
   }
 
+  // 网页表格用：项目特征（与导出「项目特征」列同源，缺省时即时生成）
+  function featText(it) {
+    if (it.features) return it.features;
+    try {
+      return (typeof generateFeature === 'function' ? generateFeature('guanglianda', it)
+             : (typeof featureText === 'function' ? featureText(it) : '')) || '';
+    } catch (e) { return ''; }
+  }
+
   function renderTable(data) {
     annotateListCode12(data);
     var tbody = document.getElementById('tableBody');
@@ -1157,6 +1166,7 @@
         '<td>' + layCell(item) + '</td>' +
         '<td>' + escapeHtml(item.material || '—') + '</td>' +
         '<td>' + escapeHtml(specText(item)) + '</td>' +
+        '<td class="cell-feature col-feat"><div class="feat-box" title="' + escapeHtml(featText(item)) + '">' + escapeHtml(featText(item) || '—') + '</div></td>' +
         '<td class="cell-qcode">' + (item.quotaCode || '—') + (item.isFallback ? ' <span class="tag tag-fb">补项</span>' : '') + ' ' + inferTag(item) + '</td>' +
         '<td class="cell-qname" title="' + escapeHtml(item.quotaName) + '">' + escapeHtml(item.quotaName || '—') + '</td>' +
         '<td class="cell-price">' + priceText(item) + '</td>' +

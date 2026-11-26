@@ -362,3 +362,21 @@ tr:hover {
     font-size: 12px;
     padding: 4px 6px;
 }
+
+/* 项目特征列（预算模式显示，概算模式由 body.gs-mode .col-feat 隐藏） */
+th.col-feat { width: 260px; min-width: 260px; }
+td.cell-feature { width: 260px; min-width: 260px; max-width: 260px; padding: 8px 10px; vertical-align: top; }
+td.cell-feature .feat-box {
+    max-height: 84px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #5b6b73;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+/* 宽表自适应：名称类列允许换行，压缩总宽、减少横向滚动 */
+td.cell-name { white-space: normal; min-width: 130px; word-break: break-word; }
+td.cell-qname { white-space: normal; min-width: 150px; word-break: break-word; }
