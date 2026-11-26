@@ -380,3 +380,23 @@ td.cell-feature .feat-box {
 /* 宽表自适应：名称类列允许换行，压缩总宽、减少横向滚动 */
 td.cell-name { white-space: normal; min-width: 130px; word-break: break-word; }
 td.cell-qname { white-space: normal; min-width: 150px; word-break: break-word; }
+
+/* SITE-FOOT:BEGIN */
+.site-foot {
+    max-width: 1240px;
+    margin: 30px auto 40px;
+    padding: 20px 20px 0;
+    border-top: 1px solid #e3e9ec;
+    text-align: center;
+}
+.site-foot .sf-line {
+    margin: 6px 0;
+    font-size: 12px;
+    line-height: 1.75;
+    color: #7b8b93;
+}
+.site-foot .sf-line a { color: #2e8b8b; text-decoration: none; }
+.site-foot .sf-line a:hover { text-decoration: underline; }
+.site-foot .sf-dim { color: #9aa8ae; font-size: 11px; }
+.site-foot .sf-sep { margin: 0 8px; color: #c8d2d7; }
+/* SITE-FOOT:END */
